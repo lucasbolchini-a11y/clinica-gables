@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificando cuenta — Gables Clinic</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { background: var(--bg-alt); }
+    .verify-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .verify-card {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 56px 48px;
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+    }
+    .verify-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .verify-icon--loading { background: var(--accent-light); }
+    .verify-icon--success { background: #EAF6F0; }
+    .verify-icon--error   { background: #FBE9E8; }
+    .verify-card h2 { margin-bottom: 12px; }
+    .verify-card p  { font-size: .9rem; margin-bottom: 28px; }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/index.html" class="nav__logo">
+      <span class="nav__logo-name">Gables Clinic</span>
+      <span class="nav__logo-sub">Coral Gables · Miami</span>
+    </a>
+  </div>
+</nav>
+
+<div class="verify-wrap">
+  <div class="verify-card" id="verify-card">
+    <div class="verify-icon verify-icon--loading">
+      <span class="spinner spinner--dark"></span>
+    </div>
+    <h2>Verificando tu cuenta...</h2>
+    <p>Un momento, estamos confirmando tu email.</p>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const token  = params.get('token');
+  const card   = document.getElementById('verify-card');
+
+  if (!token) {
+    renderError(card, 'Link inválido', 'No encontramos un token de verificación en este link.');
+    return;
+  }
+
+  try {
+    const res  = await fetch(`${API}/auth/verify/${token}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      renderError(card, 'Link inválido o expirado', data.error || 'El link ya fue usado o expiró.');
+      return;
+    }
+
+    card.innerHTML = `
+      <div class="verify-icon verify-icon--success">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2E7D5A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Cuenta verificada.</h2>
+      <p>Tu email quedó confirmado. Ya podés ingresar y reservar tu primer turno.</p>
+      <a href="/login.html" class="btn btn--accent btn--lg btn--full">Ingresar a mi cuenta</a>`;
+  } catch {
+    renderError(card, 'Error de conexión', 'No pudimos conectarnos al servidor. Intentá de nuevo.');
+  }
+});
+
+function renderError(card, title, msg) {
+  card.innerHTML = `
+    <div class="verify-icon verify-icon--error">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <h2>${title}</h2>
+    <p>${msg}</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="/signup.html" class="btn btn--accent btn--full">Crear cuenta nueva</a>
+      <button class="btn btn--outline btn--full" id="resend-btn">Reenviar email de verificación</button>
+    </div>
+    <div id="resend-form" style="display:none;margin-top:20px">
+      <div class="form-group">
+        <label class="form-label" for="resend-email">Tu email</label>
+        <input class="form-input" type="email" id="resend-email" placeholder="tu@email.com">
+      </div>
+      <div id="resend-error" class="form-error" style="margin-top:6px"></div>
+      <button class="btn btn--accent btn--full" style="margin-top:12px" id="resend-submit">Reenviar</button>
+    </div>`;
+
+  document.getElementById('resend-btn').addEventListener('click', () => {
+    document.getElementById('resend-form').style.display = 'block';
+    document.getElementById('resend-btn').style.display  = 'none';
+  });
+
+  document.getElementById('resend-submit').addEventListener('click', async () => {
+    const btn   = document.getElementById('resend-submit');
+    const email = document.getElementById('resend-email').value.trim();
+    const errEl = document.getElementById('resend-error');
+    errEl.textContent = '';
+    if (!email) { errEl.textContent = 'Ingresá tu email.'; return; }
+    setLoading(btn, true);
+    try {
+      const res  = await fetch(`${API}/auth/resend-verification`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent = data.error; setLoading(btn, false); return; }
+      btn.closest('.verify-card') || card;
+      card.innerHTML = `
+        <div class="verify-icon verify-icon--success">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2E7D5A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h2>Email reenviado.</h2>
+        <p>Revisá tu bandeja de entrada y seguí el link de verificación.</p>
+        <a href="/login.html" class="btn btn--outline btn--full">Volver al login</a>`;
+    } catch {
+      errEl.textContent = 'Error de conexión.';
+      setLoading(btn, false);
+    }
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gables Clinic — Medicina Estética · Coral Gables, Miami</title>
+  <meta name="description" content="Tratamientos estéticos no invasivos en Coral Gables. Botox, fillers, cuidado de la piel y rejuvenecimiento con resultados naturales.">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* ─── Hero ──────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero__left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: calc(var(--nav-h) + 80px) 72px 80px 72px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero__right {
+      position: relative;
+      background: var(--bg-alt);
+      overflow: hidden;
+    }
+    .hero__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.85);
+    }
+    .hero__right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--bg) 0%, transparent 30%);
+      z-index: 1;
+    }
+    .hero__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5.5vw, 5.2rem);
+      font-weight: 300;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .hero__title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+    }
+    .hero__desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 400px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+    .hero__ctas {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .hero__trust {
+      display: flex;
+      gap: 32px;
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border-light);
+    }
+    .hero__trust-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero__trust-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1;
+    }
+    .hero__trust-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    /* ─── Services preview ───────────────────────────────── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transition: transform var(--transition);
+    }
+    .service-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card__num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--accent-light);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .service-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+    .service-card p { font-size: 0.85rem; line-height: 1.7; }
+    .service-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 20px;
+      transition: gap var(--transition);
+    }
+    .service-card__link:hover { gap: 10px; }
+
+    /* ─── How it works ───────────────────────────────────── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .step {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 16px;
+    }
+    .step__num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--accent);
+      margin: 0 auto 20px;
+    }
+    .step h4 { font-size: 1rem; margin-bottom: 8px; }
+    .step p { font-size: 0.82rem; }
+
+    /* ─── Testimonials ───────────────────────────────────── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+    .testimonial__stars {
+      color: var(--accent);
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .testimonial__text {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    .testimonial__author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .testimonial__name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .testimonial__loc {
+      font-size: 0.72rem;
+      color: var(--text-light);
+    }
+
+    /* ─── CTA section ────────────────────────────────────── */
+    .cta-section {
+      background: var(--text);
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(181,137,90,.12) 0%, transparent 70%);
+    }
+    .cta-section h2 {
+      color: rgba(255,255,255,.92);
+      max-width: 540px;
+      margin: 0 auto 16px;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,.5);
+      max-width: 400px;
+      margin: 0 auto 36px;
+    }
+    .cta-section .eyebrow { justify-content: center; color: var(--accent); }
+    .cta-section .eyebrow::before { background: var(--accent); }
+
+    /* ─── Responsive ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__left { padding: calc(var(--nav-h) + 48px) 20px 56px; }
+      .hero__right { height: 300px; }
+      .hero__right::after { display: none; }
+      .hero__trust { gap: 20px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .steps::before { display: none; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Nav ──────────────────────────────────────────────── -->
+<nav class="nav" role="navigation">
+  <div class="nav__inner">
+    <a href="/index.html" class="nav__logo">
+      <span class="nav__logo-name">Gables Clinic</span>
+      <span class="nav__logo-sub">Coral Gables · Miami</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="/index.html" class="active">Inicio</a></li>
+      <li><a href="/servicios.html">Servicios</a></li>
+      <li><a href="/about.html">Nosotros</a></li>
+      <li><a href="/contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav__cta" id="nav-auth"></div>
+    <button class="nav__hamburger" id="nav-hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav__mobile" id="nav-mobile">
+  <a href="/index.html">Inicio</a>
+  <a href="/servicios.html">Servicios</a>
+  <a href="/about.html">Nosotros</a>
+  <a href="/contacto.html">Contacto</a>
+  <div id="mobile-nav-auth"></div>
+</div>
+
+<!-- ─── Hero ─────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero__left">
+    <div class="eyebrow" style="margin-bottom:28px">
+      <span class="label">Medicina estética no invasiva</span>
+    </div>
+    <h1 class="hero__title">
+      Tu mejor versión,<br>
+      con resultados<br>
+      <em>naturales.</em>
+    </h1>
+    <p class="hero__desc">
+      Tratamientos de precisión en Coral Gables, Miami.
+      Botox, fillers y rejuvenecimiento facial diseñados
+      para realzar, no transformar.
+    </p>
+    <div class="hero__ctas">
+      <a href="/signup.html" class="btn btn--accent btn--lg">Reservar turno</a>
+      <a href="/servicios.html" class="btn btn--outline btn--lg">Ver servicios</a>
+    </div>
+    <div class="hero__trust">
+      <div class="hero__trust-item">
+        <span class="hero__trust-num">1,200+</span>
+        <span class="hero__trust-label">Pacientes</span>
+      </div>
+      <div class="hero__trust-item">
+        <span class="hero__trust-num">8</span>
+        <span class="hero__trust-label">Años de experiencia</span>
+      </div>
+      <div class="hero__trust-item">
+        <span class="hero__trust-num">98%</span>
+        <span class="hero__trust-label">Satisfacción</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero__right">
+    <img
+      class="hero__img"
+      src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=900&q=80&auto=format"
+      alt="Clínica estética Coral Gables"
+      loading="eager"
+    />
+  </div>
+</section>
+
+<!-- ─── Services preview ──────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section__header fade-up">
+      <div class="eyebrow"><span class="label">Tratamientos</span></div>
+      <h2>Cada tratamiento,<br>diseñado para vos.</h2>
+      <p style="margin-top:16px">Trabajamos con los protocolos más avanzados del mercado. Siempre con diagnóstico previo y plan personalizado.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up">
+        <div class="service-card__num">01</div>
+        <h3>Botox preventivo</h3>
+        <p>Reduce líneas de expresión y previene la formación de arrugas profundas. Resultados visibles en 72 hs, con efecto natural.</p>
+        <a href="/servicios.html#botox" class="service-card__link">
+          Ver más
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-card__num">02</div>
+        <h3>Fillers de ácido hialurónico</h3>
+        <p>Restaurá volumen, definí contornos y tratá ojeras con resultados que duran de 12 a 18 meses. Sin cirugía, sin tiempo de recuperación.</p>
+        <a href="/servicios.html#fillers" class="service-card__link">
+          Ver más
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-card__num">03</div>
+        <h3>HydraFacial & Skincare</h3>
+        <p>Limpieza profunda, hidratación intensiva y luminosidad inmediata. El favorito para preparar la piel antes de cualquier evento.</p>
+        <a href="/servicios.html#hidrafacial" class="service-card__link">
+          Ver más
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="/servicios.html" class="btn btn--outline">Ver todos los tratamientos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── How it works ──────────────────────────────────────── -->
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__header--center fade-up">
+      <div class="eyebrow"><span class="label">Proceso</span></div>
+      <h2>Reservá en 4 pasos</h2>
+      <p style="margin-top:12px">Sin esperas, sin llamadas. Todo desde tu cuenta.</p>
+    </div>
+    <div class="steps">
+      <div class="step fade-up">
+        <div class="step__num">1</div>
+        <h4>Creá tu cuenta</h4>
+        <p>Registro rápido, solo necesitás tu email.</p>
+      </div>
+      <div class="step fade-up">
+        <div class="step__num">2</div>
+        <h4>Elegí el tratamiento</h4>
+        <p>Botox, fillers, skincare y más opciones disponibles.</p>
+      </div>
+      <div class="step fade-up">
+        <div class="step__num">3</div>
+        <h4>Seleccioná fecha y hora</h4>
+        <p>Ves los horarios disponibles en tiempo real.</p>
+      </div>
+      <div class="step fade-up">
+        <div class="step__num">4</div>
+        <h4>Confirmación instantánea</h4>
+        <p>Tu turno queda reservado. Podés gestionarlo desde tu cuenta.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:56px">
+      <a href="/signup.html" class="btn btn--primary btn--lg">Crear cuenta gratis</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Testimonials ──────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section__header fade-up">
+      <div class="eyebrow"><span class="label">Testimonios</span></div>
+      <h2>Lo que dicen nuestros pacientes.</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-up">
+        <div class="testimonial__stars">★★★★★</div>
+        <p class="testimonial__text">"Llevaba años evitando el botox por miedo a verme 'operada'. La Dra. me explicó todo el proceso y el resultado fue exactamente lo que buscaba: natural y sutil."</p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar">MC</div>
+          <div>
+            <div class="testimonial__name">María C.</div>
+            <div class="testimonial__loc">Coral Gables · 42 años</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-up">
+        <div class="testimonial__stars">★★★★★</div>
+        <p class="testimonial__text">"La clínica es hermosa, el equipo es profesional y la experiencia de reservar online es increíble. Nada que ver con otros lugares donde tenés que llamar tres veces."</p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar">JR</div>
+          <div>
+            <div class="testimonial__name">Julián R.</div>
+            <div class="testimonial__loc">Brickell · 35 años</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-up">
+        <div class="testimonial__stars">★★★★★</div>
+        <p class="testimonial__text">"Empecé con una consulta de evaluación y terminé convirtiéndome en paciente regular. El HydraFacial antes de los eventos cambió completamente mi rutina."</p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar">SA</div>
+          <div>
+            <div class="testimonial__name">Sofia A.</div>
+            <div class="testimonial__loc">South Miami · 29 años</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA section ───────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="container" style="position:relative;z-index:2">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:20px">
+      <span class="label" style="color:var(--accent)">Primera consulta</span>
+    </div>
+    <h2>Empezá con una evaluación sin compromiso.</h2>
+    <p>Te asesoramos sobre qué tratamiento se adapta mejor a tus objetivos, piel y presupuesto.</p>
+    <a href="/signup.html" class="btn btn--accent btn--lg">Reservar consulta gratuita</a>
+  </div>
+</section>
+
+<!-- ─── Footer ────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">Gables Clinic</div>
+        <div class="footer__brand-sub">Coral Gables · Miami</div>
+        <p class="footer__desc">Medicina estética no invasiva de alta precisión. Tratamientos personalizados para cada paciente.</p>
+      </div>
+      <div>
+        <div class="footer__col-title">Navegación</div>
+        <ul class="footer__links">
+          <li><a href="/servicios.html">Tratamientos</a></li>
+          <li><a href="/about.html">Nosotros</a></li>
+          <li><a href="/contacto.html">Contacto</a></li>
+          <li><a href="/signup.html">Reservar turno</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__col-title">Contacto</div>
+        <ul class="footer__links">
+          <li><a href="tel:+13055550000">+1 (305) 555-0000</a></li>
+          <li><a href="mailto:hola@gablesclinic.com">hola@gablesclinic.com</a></li>
+          <li><a href="#">2525 Ponce de Leon Blvd<br>Coral Gables, FL 33134</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2024 Gables Clinic. Todos los derechos reservados.</span>
+      <span>Coral Gables, Miami · FL</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── WhatsApp float ────────────────────────────────────── -->
+<a href="https://wa.me/13055550000" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

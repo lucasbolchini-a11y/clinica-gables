@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear cuenta — Gables Clinic</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { background: var(--bg-alt); }
+    .auth-wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .auth-visual {
+      position: relative;
+      overflow: hidden;
+      background: var(--text);
+      order: 2;
+    }
+    .auth-visual__img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+      filter: saturate(0.4);
+    }
+    .auth-visual__overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px;
+      z-index: 2;
+    }
+    .auth-visual__steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .auth-visual__step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .auth-visual__step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .9rem;
+      color: rgba(255,255,255,.8);
+      flex-shrink: 0;
+    }
+    .auth-visual__step-text {
+      font-size: .88rem;
+      color: rgba(255,255,255,.65);
+      line-height: 1.5;
+      padding-top: 4px;
+    }
+    .auth-visual__step-text strong {
+      display: block;
+      color: rgba(255,255,255,.9);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .auth-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 64px 72px;
+      background: var(--white);
+      order: 1;
+    }
+    .auth-logo { margin-bottom: 40px; }
+    .auth-logo-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      display: block;
+    }
+    .auth-logo-sub {
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: block;
+    }
+    .auth-panel h2 { margin-bottom: 8px; }
+    .auth-panel > p { font-size: .88rem; color: var(--text-muted); margin-bottom: 32px; }
+    .auth-form { display: flex; flex-direction: column; gap: 18px; }
+    .pw-wrapper { position: relative; }
+    .pw-toggle {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-light); cursor: pointer;
+      display: flex; align-items: center; transition: color var(--transition);
+    }
+    .pw-toggle:hover { color: var(--text-muted); }
+    .terms-text {
+      font-size: .76rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+    .terms-text a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .auth-switch {
+      text-align: center;
+      font-size: .82rem;
+      color: var(--text-muted);
+      margin-top: 20px;
+    }
+    .auth-switch a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    @media (max-width: 800px) {
+      .auth-wrapper { grid-template-columns: 1fr; }
+      .auth-visual { display: none; }
+      .auth-panel { order: 1; padding: calc(var(--nav-h) + 32px) 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/index.html" class="nav__logo">
+      <span class="nav__logo-name">Gables Clinic</span>
+      <span class="nav__logo-sub">Coral Gables · Miami</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="/index.html">Inicio</a></li>
+      <li><a href="/servicios.html">Servicios</a></li>
+      <li><a href="/about.html">Nosotros</a></li>
+    </ul>
+    <div class="nav__cta">
+      <a href="/login.html" class="btn btn--outline btn--sm">Ingresar</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-wrapper">
+  <div class="auth-panel">
+    <div class="auth-logo">
+      <span class="auth-logo-name">Gables Clinic</span>
+      <span class="auth-logo-sub">Coral Gables · Miami</span>
+    </div>
+    <h2>Creá tu cuenta.</h2>
+    <p>Gratis, sin compromiso. Reservá y gestioná tus turnos online.</p>
+
+    <form id="signup-form" class="auth-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="nombre">Nombre</label>
+          <input class="form-input" id="nombre" name="nombre" type="text" placeholder="Tu nombre" required autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="apellido">Apellido</label>
+          <input class="form-input" id="apellido" name="apellido" type="text" placeholder="Tu apellido" required autocomplete="family-name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" id="email" name="email" type="email" placeholder="tu@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="telefono">Teléfono <span style="font-weight:400;text-transform:none;font-size:.75rem;color:var(--text-light)">(opcional)</span></label>
+        <input class="form-input" id="telefono" name="telefono" type="tel" placeholder="+1 (305) 000-0000" autocomplete="tel">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Contraseña</label>
+        <div class="pw-wrapper">
+          <input class="form-input" id="password" name="password" type="password" placeholder="Mínimo 8 caracteres" required autocomplete="new-password">
+          <button type="button" class="pw-toggle" data-toggle-pw="password" aria-label="Ver contraseña">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <span class="form-hint">Al menos 8 caracteres.</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="confirm_password">Confirmar contraseña</label>
+        <div class="pw-wrapper">
+          <input class="form-input" id="confirm_password" name="confirm_password" type="password" placeholder="Repetí tu contraseña" required autocomplete="new-password">
+          <button type="button" class="pw-toggle" data-toggle-pw="confirm_password" aria-label="Ver contraseña">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="signup-error" class="form-error"></div>
+      <p class="terms-text">Al crear tu cuenta aceptás nuestros <a href="#">Términos de servicio</a> y <a href="#">Política de privacidad</a>.</p>
+      <button type="submit" class="btn btn--accent btn--full btn--lg">Crear cuenta y reservar</button>
+    </form>
+
+    <p class="auth-switch">
+      ¿Ya tenés cuenta? <a href="/login.html">Ingresar</a>
+    </p>
+  </div>
+
+  <div class="auth-visual">
+    <img class="auth-visual__img" src="https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=900&q=80&auto=format" alt="">
+    <div class="auth-visual__overlay">
+      <ul class="auth-visual__steps">
+        <li class="auth-visual__step">
+          <div class="auth-visual__step-num">1</div>
+          <div class="auth-visual__step-text"><strong>Creá tu cuenta gratis</strong>Solo necesitás tu email.</div>
+        </li>
+        <li class="auth-visual__step">
+          <div class="auth-visual__step-num">2</div>
+          <div class="auth-visual__step-text"><strong>Elegí tu tratamiento</strong>Botox, fillers, HydraFacial y más.</div>
+        </li>
+        <li class="auth-visual__step">
+          <div class="auth-visual__step-num">3</div>
+          <div class="auth-visual__step-text"><strong>Reservá en segundos</strong>Elegí fecha, horario y listo.</div>
+        </li>
+        <li class="auth-visual__step">
+          <div class="auth-visual__step-num">4</div>
+          <div class="auth-visual__step-text"><strong>Gestioná todo desde tu cuenta</strong>Ver, modificar o cancelar tus turnos.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>

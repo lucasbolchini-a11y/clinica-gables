@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosotros — Gables Clinic</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .about-hero {
+      padding: calc(var(--nav-h) + 80px) 0 0;
+      overflow: hidden;
+    }
+    .about-hero__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+      padding-bottom: 80px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .about-hero__img {
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+    .about-hero__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(0.85);
+    }
+    .about-hero__content { padding-bottom: 40px; }
+    .about-hero__content h1 { margin-bottom: 24px; }
+    .about-hero__content p { font-size: 1rem; line-height: 1.8; margin-bottom: 20px; }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 64px;
+    }
+    .value-item {
+      padding: 32px;
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+    }
+    .value-item__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .value-item h4 { margin-bottom: 10px; }
+    .value-item p { font-size: 0.85rem; }
+
+    .team-section {
+      padding: 100px 0;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+    .team-card {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .team-card__img {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+    .team-card__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(0.85);
+      transition: transform 0.5s ease;
+    }
+    .team-card:hover .team-card__img img { transform: scale(1.04); }
+    .team-card__info { padding: 28px 32px; }
+    .team-card__name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+    .team-card__role {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .team-card__bio { font-size: 0.85rem; line-height: 1.75; }
+
+    @media (max-width: 900px) {
+      .about-hero__grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-hero__img { aspect-ratio: 16/9; border-radius: var(--radius-lg); }
+      .values-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/index.html" class="nav__logo">
+      <span class="nav__logo-name">Gables Clinic</span>
+      <span class="nav__logo-sub">Coral Gables · Miami</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="/index.html">Inicio</a></li>
+      <li><a href="/servicios.html">Servicios</a></li>
+      <li><a href="/about.html" class="active">Nosotros</a></li>
+      <li><a href="/contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav__cta" id="nav-auth"></div>
+    <button class="nav__hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav__mobile" id="nav-mobile">
+  <a href="/index.html">Inicio</a>
+  <a href="/servicios.html">Servicios</a>
+  <a href="/about.html">Nosotros</a>
+  <a href="/contacto.html">Contacto</a>
+  <div id="mobile-nav-auth"></div>
+</div>
+
+<section class="about-hero">
+  <div class="container">
+    <div class="about-hero__grid">
+      <div class="about-hero__content fade-up">
+        <div class="eyebrow" style="margin-bottom:24px"><span class="label">Sobre nosotros</span></div>
+        <h1>Medicina estética que respeta quién sos.</h1>
+        <p>
+          Gables Clinic nació con una premisa simple: que un buen tratamiento estético no cambia a la persona, la revela. Trabajamos para que nuestros pacientes se vean descansados, frescos y en su mejor versión — no transformados.
+        </p>
+        <p>
+          Somos un equipo de profesionales médicos especializados en estética no invasiva, con más de 8 años de experiencia en Miami y más de 1,200 pacientes tratados. Cada procedimiento parte de una evaluación diagnóstica personalizada.
+        </p>
+        <p>
+          Nuestra clínica está ubicada en el corazón de Coral Gables, diseñada para que la experiencia — desde la primera visita hasta el seguimiento — sea tan buena como el resultado.
+        </p>
+      </div>
+      <div class="about-hero__img fade-up">
+        <img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=700&q=80&auto=format" alt="Clínica Gables">
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div class="values-grid">
+      <div class="value-item fade-up">
+        <div class="value-item__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4>Seguridad ante todo</h4>
+        <p>Solo utilizamos productos certificados con respaldo clínico. Sin atajos, sin marcas desconocidas, sin protocolos improvisados.</p>
+      </div>
+      <div class="value-item fade-up">
+        <div class="value-item__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h4>Resultados naturales</h4>
+        <p>El objetivo es que nadie sepa que te hiciste algo, pero todos noten que te ves increíble. Esa es nuestra métrica de éxito.</p>
+      </div>
+      <div class="value-item fade-up">
+        <div class="value-item__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h4>Relación a largo plazo</h4>
+        <p>No buscamos pacientes de una sola vez. Construimos un seguimiento y un plan adaptado a cada etapa de tu piel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section class="team-section">
+  <div class="container">
+    <div class="section__header fade-up">
+      <div class="eyebrow"><span class="label">El equipo</span></div>
+      <h2>Médicos especializados,<br>no esteticistas.</h2>
+      <p style="margin-top:12px">Todos los procedimientos son realizados por profesionales médicos certificados.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card fade-up">
+        <div class="team-card__img">
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=700&q=80&auto=format" alt="Dra. Andrea López">
+        </div>
+        <div class="team-card__info">
+          <div class="team-card__name">Dra. Andrea López</div>
+          <div class="team-card__role">Directora médica · Estética facial</div>
+          <p class="team-card__bio">Médica graduada con especialización en medicina estética en la Universidad de Miami. Más de 10 años aplicando técnicas de rejuvenecimiento no invasivo. Certificada en Botox, fillers y biorevitalización por IMCAS Paris.</p>
+        </div>
+      </div>
+      <div class="team-card fade-up">
+        <div class="team-card__img">
+          <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=700&q=80&auto=format" alt="Dr. Carlos Vega">
+        </div>
+        <div class="team-card__info">
+          <div class="team-card__name">Dr. Carlos Vega</div>
+          <div class="team-card__role">Médico estético · Tratamientos láser</div>
+          <p class="team-card__bio">Especialista en dermatología estética con formación en Madrid y Miami. Experto en laser de rejuvenecimiento, PRP y tratamientos avanzados de piel. Miembro de la American Society for Dermatologic Surgery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section--alt" style="text-align:center">
+  <div class="container--narrow">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:20px"><span class="label">Comenzar</span></div>
+    <h2>La primera consulta es gratuita.</h2>
+    <p style="margin:16px auto 36px;max-width:420px">Reservá una evaluación sin compromiso y salí con un plan claro para tus objetivos.</p>
+    <a href="/signup.html" class="btn btn--accent btn--lg">Reservar ahora</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">Gables Clinic</div>
+        <div class="footer__brand-sub">Coral Gables · Miami</div>
+        <p class="footer__desc">Medicina estética no invasiva de alta precisión.</p>
+      </div>
+      <div>
+        <div class="footer__col-title">Navegación</div>
+        <ul class="footer__links">
+          <li><a href="/servicios.html">Tratamientos</a></li>
+          <li><a href="/about.html">Nosotros</a></li>
+          <li><a href="/contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__col-title">Contacto</div>
+        <ul class="footer__links">
+          <li><a href="tel:+13055550000">+1 (305) 555-0000</a></li>
+          <li><a href="mailto:hola@gablesclinic.com">hola@gablesclinic.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2024 Gables Clinic.</span><span>Coral Gables, Miami · FL</span>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/13055550000" target="_blank" rel="noopener" class="whatsapp-float">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<script src="/js/main.js"></script>
+</body>
+</html>

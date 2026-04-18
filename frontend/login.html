@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingresar — Gables Clinic</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { background: var(--bg-alt); }
+    .auth-wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .auth-visual {
+      position: relative;
+      overflow: hidden;
+      background: var(--text);
+    }
+    .auth-visual__img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+      filter: saturate(0.4);
+    }
+    .auth-visual__overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 56px;
+      background: linear-gradient(to top, rgba(26,25,22,.7) 0%, transparent 60%);
+      z-index: 2;
+    }
+    .auth-visual__quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,.9);
+      line-height: 1.4;
+      max-width: 340px;
+      margin-bottom: 16px;
+    }
+    .auth-visual__source {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+    }
+    .auth-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 64px 72px;
+      background: var(--white);
+    }
+    .auth-logo {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 48px;
+    }
+    .auth-logo-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+    }
+    .auth-logo-sub {
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .auth-panel h2 { margin-bottom: 8px; }
+    .auth-panel > p { font-size: .88rem; color: var(--text-muted); margin-bottom: 36px; }
+    .auth-form { display: flex; flex-direction: column; gap: 20px; }
+    .pw-wrapper { position: relative; }
+    .pw-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: color var(--transition);
+    }
+    .pw-toggle:hover { color: var(--text-muted); }
+    .auth-divider {
+      text-align: center;
+      font-size: .78rem;
+      color: var(--text-light);
+      position: relative;
+      margin: 4px 0;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: calc(50% - 24px);
+      height: 1px;
+      background: var(--border);
+    }
+    .auth-divider::before { left: 0; }
+    .auth-divider::after { right: 0; }
+    .auth-switch {
+      text-align: center;
+      font-size: .82rem;
+      color: var(--text-muted);
+      margin-top: 24px;
+    }
+    .auth-switch a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    @media (max-width: 800px) {
+      .auth-wrapper { grid-template-columns: 1fr; }
+      .auth-visual { display: none; }
+      .auth-panel { padding: calc(var(--nav-h) + 40px) 24px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/index.html" class="nav__logo">
+      <span class="nav__logo-name">Gables Clinic</span>
+      <span class="nav__logo-sub">Coral Gables · Miami</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="/index.html">Inicio</a></li>
+      <li><a href="/servicios.html">Servicios</a></li>
+      <li><a href="/about.html">Nosotros</a></li>
+    </ul>
+    <div class="nav__cta">
+      <a href="/signup.html" class="btn btn--accent btn--sm">Crear cuenta</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-wrapper">
+  <div class="auth-visual">
+    <img class="auth-visual__img" src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=900&q=80&auto=format" alt="">
+    <div class="auth-visual__overlay">
+      <p class="auth-visual__quote">"El mejor cuidado es el que se nota en cómo te sentís, no solo en cómo te ves."</p>
+      <span class="auth-visual__source">Gables Clinic · Coral Gables</span>
+    </div>
+  </div>
+
+  <div class="auth-panel">
+    <div class="auth-logo">
+      <span class="auth-logo-name">Gables Clinic</span>
+      <span class="auth-logo-sub">Coral Gables · Miami</span>
+    </div>
+    <h2>Bienvenido/a de vuelta.</h2>
+    <p>Ingresá para gestionar tus turnos y ver tu historial.</p>
+
+    <form id="login-form" class="auth-form" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" id="email" name="email" type="email" placeholder="tu@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Contraseña</label>
+        <div class="pw-wrapper">
+          <input class="form-input" id="password" name="password" type="password" placeholder="••••••••" required autocomplete="current-password">
+          <button type="button" class="pw-toggle" data-toggle-pw="password" aria-label="Ver contraseña">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="login-error" class="form-error"></div>
+      <div id="resend-wrap" style="display:none;background:var(--accent-light);border-radius:var(--radius);padding:14px 16px;font-size:.82rem;color:var(--accent-dark)">
+        <strong>¿No verificaste tu email?</strong> Revisá tu bandeja de entrada o
+        <button id="resend-verification" class="btn btn--ghost btn--sm" style="padding:0;color:var(--accent);font-weight:600;text-decoration:underline;display:inline">reenviá el link aquí</button>.
+      </div>
+      <button type="submit" class="btn btn--primary btn--full btn--lg">Ingresar a mi cuenta</button>
+    </form>
+
+    <p class="auth-switch">
+      ¿Todavía no tenés cuenta? <a href="/signup.html">Crear cuenta gratis</a>
+    </p>
+    <p style="text-align:center;margin-top:8px;font-size:.78rem">
+      <a href="/contacto.html" style="color:var(--text-light)">¿Necesitás ayuda? Contactanos</a>
+    </p>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>

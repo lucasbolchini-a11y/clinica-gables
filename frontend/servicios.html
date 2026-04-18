@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicios — Gables Clinic</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .services-hero {
+      padding: calc(var(--nav-h) + 80px) 0 80px;
+      background: var(--bg-alt);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .services-list {
+      padding: 80px 0;
+    }
+    .service-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .service-item:last-child { border-bottom: none; }
+    .service-item:nth-child(even) .service-item__img { order: -1; }
+    .service-item__img {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .service-item__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.9);
+      transition: transform 0.6s ease;
+    }
+    .service-item__img:hover img { transform: scale(1.03); }
+    .service-item__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--accent-light);
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+      margin-bottom: 20px;
+    }
+    .service-item h2 { margin-bottom: 16px; }
+    .service-item p { margin-bottom: 20px; }
+    .service-item__meta {
+      display: flex;
+      gap: 24px;
+      margin: 24px 0;
+      padding: 20px 0;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .service-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .service-meta-item__label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .service-meta-item__val {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .benefits-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .benefits-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .benefits-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%23B5895A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .pricing-banner {
+      background: var(--accent-light);
+      border-radius: var(--radius-lg);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin: 80px 0 0;
+    }
+    .pricing-banner h3 { margin-bottom: 8px; }
+    .pricing-banner p { margin: 0; font-size: 0.88rem; }
+
+    @media (max-width: 900px) {
+      .service-item { grid-template-columns: 1fr; gap: 32px; }
+      .service-item:nth-child(even) .service-item__img { order: 0; }
+      .pricing-banner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/index.html" class="nav__logo">
+      <span class="nav__logo-name">Gables Clinic</span>
+      <span class="nav__logo-sub">Coral Gables · Miami</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="/index.html">Inicio</a></li>
+      <li><a href="/servicios.html" class="active">Servicios</a></li>
+      <li><a href="/about.html">Nosotros</a></li>
+      <li><a href="/contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav__cta" id="nav-auth"></div>
+    <button class="nav__hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav__mobile" id="nav-mobile">
+  <a href="/index.html">Inicio</a>
+  <a href="/servicios.html">Servicios</a>
+  <a href="/about.html">Nosotros</a>
+  <a href="/contacto.html">Contacto</a>
+  <div id="mobile-nav-auth"></div>
+</div>
+
+<!-- Hero -->
+<section class="services-hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="label">Tratamientos</span></div>
+    <h1 class="fade-up" style="max-width:640px">Cada tratamiento parte<br>de un diagnóstico preciso.</h1>
+    <p class="fade-up" style="max-width:500px;margin-top:16px;font-size:1rem">
+      No trabajamos con protocolos genéricos. Antes de cualquier procedimiento, evaluamos tu piel, objetivos y expectativas para diseñar un plan que tenga sentido para vos.
+    </p>
+  </div>
+</section>
+
+<!-- Services list -->
+<section class="services-list">
+  <div class="container">
+    <!-- Botox -->
+    <div class="service-item fade-up" id="botox">
+      <div>
+        <span class="service-item__tag">Más solicitado</span>
+        <h2>Botox preventivo</h2>
+        <p>La toxina botulínica bloquea la contracción muscular que genera arrugas de expresión. El objetivo no es eliminar movimiento, sino modularlo para un resultado que se vea natural y descansado.</p>
+        <div class="service-item__meta">
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Duración</span>
+            <span class="service-meta-item__val">30 min</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Resultados</span>
+            <span class="service-meta-item__val">72 hs – 1 semana</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Duración efecto</span>
+            <span class="service-meta-item__val">4 – 6 meses</span>
+          </div>
+        </div>
+        <ul class="benefits-list">
+          <li>Reduce frente, entrecejo y patas de gallo</li>
+          <li>Previene la formación de arrugas profundas</li>
+          <li>Sin tiempo de recuperación. Retomás tu rutina de inmediato</li>
+          <li>Aplicable desde los 25 años como tratamiento preventivo</li>
+        </ul>
+        <a href="/signup.html" class="btn btn--accent">Reservar turno</a>
+      </div>
+      <div class="service-item__img">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&q=80&auto=format" alt="Botox Coral Gables">
+      </div>
+    </div>
+
+    <!-- Fillers -->
+    <div class="service-item fade-up" id="fillers">
+      <div class="service-item__img">
+        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=700&q=80&auto=format" alt="Fillers ácido hialurónico">
+      </div>
+      <div>
+        <span class="service-item__tag">Alta demanda</span>
+        <h2>Fillers de ácido hialurónico</h2>
+        <p>El ácido hialurónico rellena, define y restaura volumen en zonas específicas. Resultados inmediatos con mínimas molestias, reversibles y con alta tolerancia.</p>
+        <div class="service-item__meta">
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Duración</span>
+            <span class="service-meta-item__val">45 min</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Resultados</span>
+            <span class="service-meta-item__val">Inmediatos</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Duración efecto</span>
+            <span class="service-meta-item__val">12 – 18 meses</span>
+          </div>
+        </div>
+        <ul class="benefits-list">
+          <li>Labios, pómulos, mentón y surcos nasolabiales</li>
+          <li>Tratamiento de ojeras (tear trough)</li>
+          <li>Relleno de arrugas profundas</li>
+          <li>Producto certificado y absorbible de forma natural</li>
+        </ul>
+        <a href="/signup.html" class="btn btn--accent">Reservar turno</a>
+      </div>
+    </div>
+
+    <!-- HydraFacial -->
+    <div class="service-item fade-up" id="hidrafacial">
+      <div>
+        <span class="service-item__tag">Skincare avanzado</span>
+        <h2>HydraFacial</h2>
+        <p>El tratamiento facial más solicitado en el mundo. Combina limpieza profunda, exfoliación, extracción y hidratación intensiva en una sola sesión. Sin inflamación, sin tiempo de recuperación.</p>
+        <div class="service-item__meta">
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Duración</span>
+            <span class="service-meta-item__val">60 min</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Resultados</span>
+            <span class="service-meta-item__val">Inmediatos</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Frecuencia</span>
+            <span class="service-meta-item__val">Mensual</span>
+          </div>
+        </div>
+        <ul class="benefits-list">
+          <li>Luminosidad y textura uniformes desde la primera sesión</li>
+          <li>Ideal para pieles secas, mixtas u opacas</li>
+          <li>Tratamiento express para eventos o viajes</li>
+          <li>Apto para todo tipo de piel, incluida la sensible</li>
+        </ul>
+        <a href="/signup.html" class="btn btn--accent">Reservar turno</a>
+      </div>
+      <div class="service-item__img">
+        <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=700&q=80&auto=format" alt="HydraFacial Miami">
+      </div>
+    </div>
+
+    <!-- Biorev -->
+    <div class="service-item fade-up" id="biorevital">
+      <div class="service-item__img">
+        <img src="https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=700&q=80&auto=format" alt="Biorevitalización facial">
+      </div>
+      <div>
+        <h2>Biorevitalización facial</h2>
+        <p>Microinyecciones intradérmicas de ácido hialurónico y vitaminas para rejuvenecer la piel desde adentro. Mejora la hidratación, firmeza y calidad general de la piel.</p>
+        <div class="service-item__meta">
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Duración</span>
+            <span class="service-meta-item__val">40 min</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Sesiones recomendadas</span>
+            <span class="service-meta-item__val">3 – 4 sesiones</span>
+          </div>
+          <div class="service-meta-item">
+            <span class="service-meta-item__label">Efecto</span>
+            <span class="service-meta-item__val">6 – 9 meses</span>
+          </div>
+        </div>
+        <ul class="benefits-list">
+          <li>Rejuvenecimiento global sin cambiar rasgos</li>
+          <li>Mejora tono, elasticidad y firmeza</li>
+          <li>Ideal para piel apagada o con inicio de flacidez</li>
+          <li>Protocolo premium con Jalupro o Profhilo</li>
+        </ul>
+        <a href="/signup.html" class="btn btn--accent">Reservar turno</a>
+      </div>
+    </div>
+
+    <!-- Pricing banner -->
+    <div class="pricing-banner fade-up">
+      <div>
+        <h3>¿No sabés por dónde empezar?</h3>
+        <p>Reservá una consulta de evaluación sin costo. Te orientamos sin compromiso.</p>
+      </div>
+      <a href="/signup.html" class="btn btn--primary btn--lg" style="flex-shrink:0">Consulta gratuita</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">Gables Clinic</div>
+        <div class="footer__brand-sub">Coral Gables · Miami</div>
+        <p class="footer__desc">Medicina estética no invasiva. Resultados naturales y personalizados.</p>
+      </div>
+      <div>
+        <div class="footer__col-title">Tratamientos</div>
+        <ul class="footer__links">
+          <li><a href="#botox">Botox</a></li>
+          <li><a href="#fillers">Fillers</a></li>
+          <li><a href="#hidrafacial">HydraFacial</a></li>
+          <li><a href="#biorevital">Biorevitalización</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__col-title">Contacto</div>
+        <ul class="footer__links">
+          <li><a href="tel:+13055550000">+1 (305) 555-0000</a></li>
+          <li><a href="mailto:hola@gablesclinic.com">hola@gablesclinic.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2024 Gables Clinic.</span>
+      <span>Coral Gables, Miami · FL</span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/13055550000" target="_blank" rel="noopener" class="whatsapp-float">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

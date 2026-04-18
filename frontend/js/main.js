@@ -2,7 +2,7 @@
    MAIN.JS — Shared utilities
    ════════════════════════════════════════════════════════════ */
 
-const API = 'http://localhost:3001/api';
+const API = 'https://clinica-gables.onrender.com/api';
 
 // ─── Auth helpers ─────────────────────────────────────────
 const Auth = {

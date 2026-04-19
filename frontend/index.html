@@ -9,355 +9,315 @@
   <style>
     /* ─── Hero ──────────────────────────────────────────── */
     .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       position: relative;
-      overflow: hidden;
-    }
-    .hero__left {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: calc(var(--nav-h) + 80px) 72px 80px 72px;
-      position: relative;
-      z-index: 2;
-    }
-    .hero__right {
-      position: relative;
-      background: var(--bg-alt);
+      justify-content: flex-end;
       overflow: hidden;
+      background: #0e0d0b;
     }
-    .hero__img {
+
+    /* Full-bleed background image */
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero__bg img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: saturate(0.85);
+      object-position: center 20%;
+      opacity: 0.48;
+      filter: saturate(0.6);
     }
-    .hero__right::after {
+    /* Dark gradient bottom */
+    .hero__bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right, var(--bg) 0%, transparent 30%);
-      z-index: 1;
+      background:
+        linear-gradient(to top, rgba(14,13,11,0.95) 0%, rgba(14,13,11,0.4) 50%, rgba(14,13,11,0.15) 100%),
+        linear-gradient(to right, rgba(14,13,11,0.3) 0%, transparent 60%);
     }
+
+    /* Location pill — top left */
+    .hero__location {
+      position: absolute;
+      top: calc(var(--nav-h) + 32px);
+      left: 48px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      animation: fadeInDown 0.8s ease 0.2s both;
+    }
+    .hero__location::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* Scroll indicator — right side */
+    .hero__scroll {
+      position: absolute;
+      right: 48px;
+      bottom: 48px;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 1s ease 1.2s both;
+    }
+    .hero__scroll span {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      writing-mode: vertical-rl;
+    }
+    .hero__scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 0.8; transform: scaleY(1.15); }
+    }
+
+    /* Main content — bottom */
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      padding: 0 48px 64px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 48px;
+    }
+
+    /* Title — large, editorial, bottom-left */
     .hero__title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 5.5vw, 5.2rem);
       font-weight: 300;
-      line-height: 1.04;
-      letter-spacing: -0.025em;
-      color: var(--text);
-      margin-bottom: 24px;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: rgba(255,255,255,0.92);
+      margin: 0;
     }
-    .hero__title em {
+    .hero__title-line {
+      display: block;
+      overflow: hidden;
+    }
+    .hero__title-line span {
+      display: block;
+      animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero__title-line:nth-child(1) span { font-size: clamp(3.5rem, 7vw, 7rem); animation-delay: 0.3s; }
+    .hero__title-line:nth-child(2) span {
+      font-size: clamp(3.5rem, 7vw, 7rem);
       font-style: italic;
       font-weight: 400;
       color: var(--accent);
+      animation-delay: 0.45s;
+    }
+    .hero__title-line:nth-child(3) span { font-size: clamp(3.5rem, 7vw, 7rem); animation-delay: 0.6s; }
+
+    /* Right column — meta info stacked */
+    .hero__meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 32px;
+      padding-bottom: 8px;
+      animation: fadeIn 0.8s ease 0.9s both;
     }
     .hero__desc {
-      font-size: 1rem;
-      color: var(--text-muted);
-      max-width: 400px;
-      line-height: 1.8;
-      margin-bottom: 40px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.75;
+      text-align: right;
+      max-width: 220px;
     }
     .hero__ctas {
       display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .hero__trust {
-      display: flex;
-      gap: 32px;
-      margin-top: 56px;
-      padding-top: 40px;
-      border-top: 1px solid var(--border-light);
-    }
-    .hero__trust-item {
-      display: flex;
       flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
     }
-    .hero__trust-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      font-weight: 300;
-      color: var(--text);
-      line-height: 1;
-    }
-    .hero__trust-label {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-light);
-      margin-top: 4px;
-    }
-
-    /* ─── Services preview ───────────────────────────────── */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .service-card {
-      background: var(--white);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-lg);
-      padding: 36px 32px;
-      position: relative;
-      overflow: hidden;
-      transition: all var(--transition);
-    }
-    .service-card::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
+    .hero__ctas .btn--accent {
       background: var(--accent);
-      transform: scaleX(0);
-      transition: transform var(--transition);
+      border-color: var(--accent);
     }
-    .service-card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-3px);
-    }
-    .service-card:hover::before { transform: scaleX(1); }
-    .service-card__num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem;
-      font-weight: 300;
-      color: var(--accent-light);
-      line-height: 1;
-      margin-bottom: 20px;
-    }
-    .service-card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 12px;
-    }
-    .service-card p { font-size: 0.85rem; line-height: 1.7; }
-    .service-card__link {
+    .hero__ctas .btn--ghost-light {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.65);
+      padding: 13px 28px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+      white-space: nowrap;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-top: 20px;
-      transition: gap var(--transition);
     }
-    .service-card__link:hover { gap: 10px; }
+    .hero__ctas .btn--ghost-light:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.9);
+    }
 
-    /* ─── How it works ───────────────────────────────────── */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    /* Stats bar — horizontal strip above content */
+    .hero__stats {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
       gap: 0;
-      position: relative;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 0;
+      animation: fadeIn 0.8s ease 1s both;
     }
-    .steps::before {
-      content: '';
-      position: absolute;
-      top: 28px;
-      left: 12%;
-      right: 12%;
-      height: 1px;
-      background: var(--border);
-      z-index: 0;
-    }
-    .step {
-      text-align: center;
-      position: relative;
-      z-index: 1;
-      padding: 0 16px;
-    }
-    .step__num {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--white);
-      border: 1px solid var(--border);
+    .hero__stat {
+      flex: 1;
+      padding: 20px 40px;
+      border-right: 1px solid rgba(255,255,255,0.08);
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 400;
-      color: var(--accent);
-      margin: 0 auto 20px;
-    }
-    .step h4 { font-size: 1rem; margin-bottom: 8px; }
-    .step p { font-size: 0.82rem; }
-
-    /* ─── Testimonials ───────────────────────────────────── */
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .testimonial {
-      background: var(--white);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-    }
-    .testimonial__stars {
-      color: var(--accent);
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      margin-bottom: 16px;
-    }
-    .testimonial__text {
-      font-size: 0.92rem;
-      line-height: 1.75;
-      color: var(--text-muted);
-      font-style: italic;
-      margin-bottom: 24px;
-    }
-    .testimonial__author {
-      display: flex;
-      align-items: center;
+      align-items: baseline;
       gap: 12px;
     }
-    .testimonial__avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--accent-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .hero__stat:last-child { border-right: none; }
+    .hero__stat-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.9rem;
-      color: var(--accent);
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      line-height: 1;
+    }
+    .hero__stat-label {
+      font-size: 0.68rem;
       font-weight: 500;
-    }
-    .testimonial__name {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .testimonial__loc {
-      font-size: 0.72rem;
-      color: var(--text-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
     }
 
-    /* ─── CTA section ────────────────────────────────────── */
-    .cta-section {
-      background: var(--text);
-      padding: 100px 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(60px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .cta-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(181,137,90,.12) 0%, transparent 70%);
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
-    .cta-section h2 {
-      color: rgba(255,255,255,.92);
-      max-width: 540px;
-      margin: 0 auto 16px;
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .cta-section p {
-      color: rgba(255,255,255,.5);
-      max-width: 400px;
-      margin: 0 auto 36px;
-    }
-    .cta-section .eyebrow { justify-content: center; color: var(--accent); }
-    .cta-section .eyebrow::before { background: var(--accent); }
 
-    /* ─── Responsive ─────────────────────────────────────── */
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero__left { padding: calc(var(--nav-h) + 48px) 20px 56px; }
-      .hero__right { height: 300px; }
-      .hero__right::after { display: none; }
-      .hero__trust { gap: 20px; }
-      .services-grid { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr 1fr; gap: 32px; }
-      .steps::before { display: none; }
-      .testimonials-grid { grid-template-columns: 1fr; }
+      .hero__location { left: 20px; }
+      .hero__scroll { display: none; }
+      .hero__content {
+        grid-template-columns: 1fr;
+        padding: 0 20px 48px;
+        gap: 28px;
+      }
+      .hero__meta {
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .hero__desc { text-align: left; max-width: 100%; }
+      .hero__ctas { flex-direction: row; align-items: center; }
+      .hero__stat { padding: 16px 20px; }
+      .hero__stat-num { font-size: 1.6rem; }
     }
+    @media (max-width: 600px) {
+      .hero__stats { flex-wrap: wrap; }
+      .hero__stat { flex: 0 0 50%; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    }
+
   </style>
-</head>
-<body>
-
-<!-- ─── Nav ──────────────────────────────────────────────── -->
-<nav class="nav" role="navigation">
-  <div class="nav__inner">
-    <a href="/index.html" class="nav__logo">
-      <span class="nav__logo-name">Gables Clinic</span>
-      <span class="nav__logo-sub">Coral Gables · Miami</span>
-    </a>
-    <ul class="nav__links">
-      <li><a href="/index.html" class="active">Inicio</a></li>
-      <li><a href="/servicios.html">Servicios</a></li>
-      <li><a href="/about.html">Nosotros</a></li>
-      <li><a href="/contacto.html">Contacto</a></li>
-    </ul>
-    <div class="nav__cta" id="nav-auth"></div>
-    <button class="nav__hamburger" id="nav-hamburger" aria-label="Menú">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-<div class="nav__mobile" id="nav-mobile">
-  <a href="/index.html">Inicio</a>
-  <a href="/servicios.html">Servicios</a>
-  <a href="/about.html">Nosotros</a>
-  <a href="/contacto.html">Contacto</a>
-  <div id="mobile-nav-auth"></div>
-</div>
-
 <!-- ─── Hero ─────────────────────────────────────────────── -->
 <section class="hero">
-  <div class="hero__left">
-    <div class="eyebrow" style="margin-bottom:28px">
-      <span class="label">Medicina estética no invasiva</span>
-    </div>
-    <h1 class="hero__title">
-      Tu mejor versión,<br>
-      con resultados<br>
-      <em>naturales.</em>
-    </h1>
-    <p class="hero__desc">
-      Tratamientos de precisión en Coral Gables, Miami.
-      Botox, fillers y rejuvenecimiento facial diseñados
-      para realzar, no transformar.
-    </p>
-    <div class="hero__ctas">
-      <a href="/signup.html" class="btn btn--accent btn--lg">Reservar turno</a>
-      <a href="/servicios.html" class="btn btn--outline btn--lg">Ver servicios</a>
-    </div>
-    <div class="hero__trust">
-      <div class="hero__trust-item">
-        <span class="hero__trust-num">1,200+</span>
-        <span class="hero__trust-label">Pacientes</span>
-      </div>
-      <div class="hero__trust-item">
-        <span class="hero__trust-num">8</span>
-        <span class="hero__trust-label">Años de experiencia</span>
-      </div>
-      <div class="hero__trust-item">
-        <span class="hero__trust-num">98%</span>
-        <span class="hero__trust-label">Satisfacción</span>
-      </div>
-    </div>
-  </div>
-  <div class="hero__right">
+
+  <!-- Background image -->
+  <div class="hero__bg">
     <img
-      class="hero__img"
-      src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=900&q=80&auto=format"
-      alt="Clínica estética Coral Gables"
+      src="https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1600&q=80&auto=format"
+      alt=""
       loading="eager"
+      aria-hidden="true"
     />
   </div>
+
+  <!-- Location tag -->
+  <div class="hero__location">Coral Gables · Miami, FL</div>
+
+  <!-- Scroll indicator -->
+  <div class="hero__scroll">
+    <div class="hero__scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="hero__stats">
+    <div class="hero__stat">
+      <span class="hero__stat-num">1,200+</span>
+      <span class="hero__stat-label">Pacientes</span>
+    </div>
+    <div class="hero__stat">
+      <span class="hero__stat-num">8</span>
+      <span class="hero__stat-label">Años de experiencia</span>
+    </div>
+    <div class="hero__stat">
+      <span class="hero__stat-num">98%</span>
+      <span class="hero__stat-label">Satisfacción</span>
+    </div>
+    <div class="hero__stat">
+      <span class="hero__stat-num">9</span>
+      <span class="hero__stat-label">Tratamientos disponibles</span>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="hero__content">
+    <h1 class="hero__title">
+      <span class="hero__title-line"><span>Tu mejor</span></span>
+      <span class="hero__title-line"><span>versión,</span></span>
+      <span class="hero__title-line"><span>natural.</span></span>
+    </h1>
+    <div class="hero__meta">
+      <p class="hero__desc">
+        Botox, fillers y rejuvenecimiento<br>
+        diseñados para realzar,<br>
+        no transformar.
+      </p>
+      <div class="hero__ctas">
+        <a href="/signup.html" class="btn btn--accent btn--lg">Reservar turno</a>
+        <a href="/servicios.html" class="hero__ctas btn--ghost-light">Ver tratamientos</a>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- ─── Services preview ──────────────────────────────────── -->

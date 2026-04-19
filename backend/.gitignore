@@ -1,4 +1,2 @@
 node_modules/
 .env
-data/users.json
-data/bookings.json

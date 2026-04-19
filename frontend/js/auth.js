@@ -96,13 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       setLoading(btn, true);
       try {
-        await apiFetch('/auth/register', {
+        const data = await apiFetch('/auth/register', {
           method: 'POST',
           body: JSON.stringify({ nombre, apellido, email, telefono, password })
         });
 
-        // Mostrar pantalla de "revisá tu email" en lugar de redirigir
-        showPendingVerification(email);
+        // Verificación desactivada para portfolio — login directo
+        Auth.save(data.token, data.user);
+        showToast('Cuenta creada', `Bienvenido/a, ${data.user.nombre}`, 'success');
+        setTimeout(() => { window.location.href = '/dashboard.html'; }, 700);
 
       } catch (err) {
         if (errEl) errEl.textContent = err.message;

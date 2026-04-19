@@ -128,10 +128,19 @@ function renderBookingList(container, bookings, showActions) {
     const d = formatDateShort(b.fecha);
     const service = SERVICIOS.find(s => s.value === b.servicio);
     const label = service ? service.label : b.servicio;
-    const isCancelled = b.estado === 'cancelado';
+    const isCancelled  = b.estado === 'cancelado';
+    const isPending    = b.estado === 'pendiente';
+    const isRejected   = b.estado === 'rechazado';
+
+    const cardClass  = (isCancelled || isRejected) ? 'booking-card--cancelled' : '';
+    const badgeClass = isCancelled ? 'badge--cancelled' : isRejected ? 'badge--cancelled' : isPending ? 'badge--pending' : 'badge--success';
+    const badgeText  = isCancelled ? 'Cancelado' : isRejected ? 'Rechazado' : isPending ? 'Pendiente' : 'Confirmado';
+    const cancelBtn  = showActions && isPending
+      ? `<button class="btn btn--outline btn--sm" onclick="cancelBooking('${b.id}')">Cancelar</button>`
+      : '';
 
     return `
-      <div class="booking-card ${isCancelled ? 'booking-card--cancelled' : ''}" id="booking-${b.id}">
+      <div class="booking-card ${cardClass}" id="booking-${b.id}">
         <div class="booking-card__date">
           <span class="booking-card__day">${d.day}</span>
           <span class="booking-card__month">${d.month}</span>
@@ -143,10 +152,11 @@ function renderBookingList(container, bookings, showActions) {
             ${b.hora} hs · ${d.full}
             ${b.notas ? `· <em style="font-size:.75rem;">${b.notas}</em>` : ''}
           </div>
+          ${isRejected && b.motivoRechazo ? `<div style="font-size:.75rem;color:#C0392B;margin-top:6px">Motivo: ${b.motivoRechazo}</div>` : ''}
         </div>
         <div class="booking-card__actions">
-          <span class="badge badge--${isCancelled ? 'cancelled' : 'success'}">${isCancelled ? 'Cancelado' : 'Confirmado'}</span>
-          ${showActions && !isCancelled ? `<button class="btn btn--outline btn--sm" onclick="cancelBooking('${b.id}')">Cancelar</button>` : ''}
+          <span class="badge ${badgeClass}">${badgeText}</span>
+          ${cancelBtn}
         </div>
       </div>`;
   }).join('');
@@ -238,7 +248,7 @@ async function handleBookingSubmit(e) {
       method: 'POST',
       body: JSON.stringify({ servicio, fecha, hora, notas })
     });
-    showToast('Turno confirmado', `${fecha} a las ${hora} hs`, 'success');
+    showToast('Solicitud enviada', `Tu pedido para el ${fecha} a las ${hora} hs está pendiente de confirmación.`, 'default');
     e.target.reset();
     document.getElementById('slots-container').innerHTML = '';
     document.getElementById('selected-hora').value = '';

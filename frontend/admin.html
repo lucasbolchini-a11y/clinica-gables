@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin — Gables Clinic</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <style>/* ════════════════════════════════════════════════════════════
+   ADMIN PANEL — Styles
+   ════════════════════════════════════════════════════════════ */
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* ─── Sidebar ────────────────────────────────────────────── */
+.admin-sidebar {
+  background: var(--text);
+  padding: calc(var(--nav-h) + 32px) 0 32px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.admin-sidebar__brand {
+  padding: 0 24px 28px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  margin-bottom: 16px;
+}
+.admin-sidebar__brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.9);
+  letter-spacing: .04em;
+  display: block;
+}
+.admin-sidebar__brand-sub {
+  font-size: .62rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+.admin-sidebar__label {
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+  padding: 0 24px;
+  margin: 12px 0 6px;
+}
+.admin-nav {
+  list-style: none;
+  padding: 0 12px;
+}
+.admin-nav li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: var(--radius);
+  font-size: .82rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.5);
+  transition: all var(--transition);
+}
+.admin-nav li a:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.85); }
+.admin-nav li a.active { background: rgba(181,137,90,.18); color: var(--accent); }
+.admin-sidebar__footer {
+  margin-top: auto;
+  padding: 16px 12px 0;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.admin-sidebar__footer a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: .78rem;
+  color: rgba(255,255,255,.3);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+.admin-sidebar__footer a:hover { color: rgba(255,255,255,.6); background: rgba(255,255,255,.04); }
+
+/* ─── Main ───────────────────────────────────────────────── */
+.admin-main {
+  background: var(--bg);
+  padding: calc(var(--nav-h) + 40px) 48px 64px;
+  min-height: 100vh;
+}
+.admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  gap: 20px;
+}
+.admin-header h1 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); }
+.admin-header p { font-size: .85rem; margin-top: 4px; }
+
+/* ─── Stats ──────────────────────────────────────────────── */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.admin-stat {
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.admin-stat:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.admin-stat.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(181,137,90,.1); }
+.admin-stat__label {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.admin-stat__value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1;
+}
+.admin-stat--pending .admin-stat__value { color: #A0660A; }
+.admin-stat--confirmed .admin-stat__value { color: #2E7D5A; }
+.admin-stat--rejected .admin-stat__value { color: #C0392B; }
+
+/* ─── Filter bar ─────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: var(--white);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.filter-btn:hover { border-color: var(--text-muted); color: var(--text); }
+.filter-btn.active {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--white);
+}
+.filter-bar__count {
+  font-size: .78rem;
+  color: var(--text-light);
+  margin-left: auto;
+}
+
+/* ─── Booking table ──────────────────────────────────────── */
+.bookings-table {
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.bookings-table__head {
+  display: grid;
+  grid-template-columns: 90px 1.4fr 1.6fr 1.2fr 100px 140px;
+  gap: 0;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--bg);
+}
+.bookings-table__head span {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+.booking-row {
+  display: grid;
+  grid-template-columns: 90px 1.4fr 1.6fr 1.2fr 100px 140px;
+  gap: 0;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-light);
+  align-items: center;
+  transition: background var(--transition);
+}
+.booking-row:last-child { border-bottom: none; }
+.booking-row:hover { background: var(--bg); }
+.booking-row__date {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.booking-row__time {
+  font-size: .75rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+.booking-row__patient {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.booking-row__email {
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.booking-row__service {
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+.booking-row__notas {
+  font-size: .75rem;
+  color: var(--text-light);
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.booking-row__actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* ─── Action buttons ─────────────────────────────────────── */
+.btn-confirm {
+  padding: 7px 12px;
+  background: #EAF6F0;
+  border: 1px solid #C0DDD0;
+  border-radius: var(--radius);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: #2E7D5A;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.btn-confirm:hover { background: #2E7D5A; color: white; border-color: #2E7D5A; }
+.btn-reject {
+  padding: 7px 12px;
+  background: #FBE9E8;
+  border: 1px solid #EABDB9;
+  border-radius: var(--radius);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: #C0392B;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.btn-reject:hover { background: #C0392B; color: white; border-color: #C0392B; }
+
+/* ─── Modal ──────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,25,22,.5);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn .2s ease;
+}
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px 40px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(26,25,22,.2);
+  animation: slideUp .25s ease;
+}
+.modal h3 { margin-bottom: 8px; }
+.modal > p { font-size: .88rem; margin-bottom: 24px; }
+.modal__actions { display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── Login admin ────────────────────────────────────────── */
+.admin-login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--text);
+  padding: 20px;
+}
+.admin-login-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  width: 100%;
+  max-width: 400px;
+}
+.admin-login-card__logo {
+  margin-bottom: 32px;
+}
+.admin-login-card__logo-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--text);
+  display: block;
+}
+.admin-login-card__logo-sub {
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  display: block;
+}
+.admin-login-card h2 { margin-bottom: 6px; }
+.admin-login-card > p { font-size: .85rem; color: var(--text-muted); margin-bottom: 28px; }
+.admin-login-form { display: flex; flex-direction: column; gap: 18px; }
+
+/* ─── Empty / loading ────────────────────────────────────── */
+.admin-empty {
+  text-align: center;
+  padding: 64px 32px;
+  color: var(--text-light);
+  font-size: .88rem;
+}
+.admin-empty__icon { font-size: 2rem; margin-bottom: 12px; opacity: .4; }
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .admin-stats { grid-template-columns: repeat(3, 1fr); }
+  .bookings-table__head,
+  .booking-row { grid-template-columns: 80px 1.2fr 1.4fr 1fr 90px 130px; }
+}
+@media (max-width: 900px) {
+  .admin-layout { grid-template-columns: 1fr; }
+  .admin-sidebar { display: none; }
+  .admin-main { padding: calc(var(--nav-h) + 24px) 16px 48px; }
+  .admin-stats { grid-template-columns: repeat(2, 1fr); }
+  .bookings-table__head { display: none; }
+  .booking-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-light);
+  }
+}</style>
+</head>
+<body>
+
+<!-- ─── Nav ──────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/index.html" class="nav__logo">
+      <span class="nav__logo-name">Gables Clinic</span>
+      <span class="nav__logo-sub">Panel de administración</span>
+    </a>
+    <div class="nav__cta">
+      <span id="admin-user-label" style="font-size:.78rem;color:var(--text-muted);margin-right:8px"></span>
+      <button onclick="adminLogout()" class="btn btn--ghost btn--sm">Salir</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Login screen ─────────────────────────────────────── -->
+<div id="admin-login-screen" style="display:none">
+  <div class="admin-login-wrap">
+    <div class="admin-login-card">
+      <div class="admin-login-card__logo">
+        <span class="admin-login-card__logo-name">Gables Clinic</span>
+        <span class="admin-login-card__logo-sub">Acceso administrador</span>
+      </div>
+      <h2>Panel de gestión.</h2>
+      <p>Solo para uso interno del equipo de la clínica.</p>
+      <form id="admin-login-form" class="admin-login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="admin-username">Usuario</label>
+          <input class="form-input" id="admin-username" type="text" placeholder="admin" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="admin-password">Contraseña</label>
+          <input class="form-input" id="admin-password" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div id="admin-login-error" class="form-error"></div>
+        <button type="submit" class="btn btn--primary btn--full btn--lg">Ingresar al panel</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Dashboard ────────────────────────────────────────── -->
+<div id="admin-dashboard" style="display:none">
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <span class="admin-sidebar__brand-name">Gables Clinic</span>
+        <span class="admin-sidebar__brand-sub">Admin</span>
+      </div>
+      <div class="admin-sidebar__label">Gestión</div>
+      <ul class="admin-nav">
+        <li>
+          <a href="#" class="active" data-view="bookings">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Solicitudes de turno
+          </a>
+        </li>
+        <li>
+          <a href="#" data-view="all">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Todos los turnos
+          </a>
+        </li>
+      </ul>
+      <div class="admin-sidebar__label">Web</div>
+      <ul class="admin-nav">
+        <li><a href="/index.html" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Ver web
+        </a></li>
+      </ul>
+      <div class="admin-sidebar__footer">
+        <a href="#" onclick="adminLogout()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar sesión
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <!-- Header -->
+      <div class="admin-header">
+        <div>
+          <h1 id="view-title">Solicitudes de turno</h1>
+          <p id="view-subtitle">Confirmá o rechazá las solicitudes pendientes.</p>
+        </div>
+        <button class="btn btn--outline btn--sm" onclick="loadData()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Actualizar
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="admin-stats" id="admin-stats">
+        <div class="admin-stat" onclick="filterBy('all')">
+          <div class="admin-stat__label">Total</div>
+          <div class="admin-stat__value" id="stat-total">–</div>
+        </div>
+        <div class="admin-stat admin-stat--pending" onclick="filterBy('pendiente')">
+          <div class="admin-stat__label">Pendientes</div>
+          <div class="admin-stat__value" id="stat-pending">–</div>
+        </div>
+        <div class="admin-stat admin-stat--confirmed" onclick="filterBy('confirmado')">
+          <div class="admin-stat__label">Confirmados</div>
+          <div class="admin-stat__value" id="stat-confirmed">–</div>
+        </div>
+        <div class="admin-stat admin-stat--rejected" onclick="filterBy('rechazado')">
+          <div class="admin-stat__label">Rechazados</div>
+          <div class="admin-stat__value" id="stat-rejected">–</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat__label">Usuarios</div>
+          <div class="admin-stat__value" id="stat-users">–</div>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="pendiente" onclick="filterBy('pendiente')">Pendientes</button>
+        <button class="filter-btn" data-filter="confirmado" onclick="filterBy('confirmado')">Confirmados</button>
+        <button class="filter-btn" data-filter="rechazado" onclick="filterBy('rechazado')">Rechazados</button>
+        <button class="filter-btn" data-filter="cancelado" onclick="filterBy('cancelado')">Cancelados</button>
+        <button class="filter-btn" data-filter="all" onclick="filterBy('all')">Todos</button>
+        <span class="filter-bar__count" id="filter-count"></span>
+      </div>
+
+      <!-- Table -->
+      <div class="bookings-table">
+        <div class="bookings-table__head">
+          <span>Fecha / Hora</span>
+          <span>Paciente</span>
+          <span>Tratamiento</span>
+          <span>Notas</span>
+          <span>Estado</span>
+          <span>Acciones</span>
+        </div>
+        <div id="bookings-list">
+          <div class="admin-empty">
+            <div class="admin-empty__icon">📅</div>
+            Cargando solicitudes...
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ─── Modal rechazo ─────────────────────────────────────── -->
+<div id="reject-modal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h3>Rechazar solicitud</h3>
+    <p>Podés incluir un motivo para que el paciente pueda reagendar.</p>
+    <div class="form-group">
+      <label class="form-label" for="reject-reason">Motivo (opcional)</label>
+      <textarea class="form-textarea" id="reject-reason" placeholder="Ej: El médico no estará disponible ese día..." style="min-height:90px"></textarea>
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--outline" onclick="closeRejectModal()">Cancelar</button>
+      <button class="btn btn--accent" id="confirm-reject-btn" onclick="confirmReject()">Confirmar rechazo</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+<script>
+const ADMIN_API = 'http://localhost:3001/api/admin';
+const SERVICIOS = {
+  botox:'Botox preventivo', fillers:'Fillers de ácido hialurónico',
+  hidrafacial:'HydraFacial', biorevital:'Biorevitalización',
+  peeling:'Peeling químico', prp:'PRP / Plasma', mesoterapia:'Mesoterapia',
+  laser:'Laser rejuvenecimiento', consulta:'Consulta de evaluación'
+};
+
+let adminToken   = localStorage.getItem('cg_admin_token');
+let allBookings  = [];
+let currentFilter = 'pendiente';
+let rejectBookingId = null;
+
+// ─── Init ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  if (adminToken) {
+    showDashboard();
+    loadData();
+  } else {
+    showLogin();
+  }
+
+  document.getElementById('admin-login-form').addEventListener('submit', handleLogin);
+});
+
+function showLogin() {
+  document.getElementById('admin-login-screen').style.display = 'block';
+  document.getElementById('admin-dashboard').style.display    = 'none';
+}
+function showDashboard() {
+  document.getElementById('admin-login-screen').style.display = 'none';
+  document.getElementById('admin-dashboard').style.display    = 'block';
+}
+function adminLogout() {
+  localStorage.removeItem('cg_admin_token');
+  adminToken = null;
+  showLogin();
+}
+
+// ─── Login ────────────────────────────────────────────────
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn    = e.target.querySelector('[type="submit"]');
+  const errEl  = document.getElementById('admin-login-error');
+  const user   = document.getElementById('admin-username').value.trim();
+  const pass   = document.getElementById('admin-password').value;
+  errEl.textContent = '';
+  setLoading(btn, true);
+  try {
+    const res  = await fetch(`${ADMIN_API}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user, password: pass })
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error; setLoading(btn, false); return; }
+    adminToken = data.token;
+    localStorage.setItem('cg_admin_token', adminToken);
+    document.getElementById('admin-user-label').textContent = `Sesión: ${user}`;
+    showDashboard();
+    loadData();
+  } catch {
+    errEl.textContent = 'Error de conexión.';
+    setLoading(btn, false);
+  }
+}
+
+// ─── Load data ────────────────────────────────────────────
+async function loadData() {
+  await Promise.all([loadStats(), loadBookings()]);
+}
+
+async function loadStats() {
+  try {
+    const res  = await fetch(`${ADMIN_API}/stats`, { headers: { Authorization: `Bearer ${adminToken}` } });
+    if (res.status === 401) { adminLogout(); return; }
+    const data = await res.json();
+    document.getElementById('stat-total').textContent     = data.total;
+    document.getElementById('stat-pending').textContent   = data.pendientes;
+    document.getElementById('stat-confirmed').textContent = data.confirmados;
+    document.getElementById('stat-rejected').textContent  = data.rechazados;
+    document.getElementById('stat-users').textContent     = data.usuarios;
+  } catch {}
+}
+
+async function loadBookings() {
+  const list = document.getElementById('bookings-list');
+  list.innerHTML = `<div class="admin-empty"><div class="admin-empty__icon">⏳</div>Cargando...</div>`;
+  try {
+    const res  = await fetch(`${ADMIN_API}/bookings`, { headers: { Authorization: `Bearer ${adminToken}` } });
+    if (res.status === 401) { adminLogout(); return; }
+    allBookings = await res.json();
+    renderBookings();
+  } catch {
+    list.innerHTML = `<div class="admin-empty">Error al cargar. <button class="btn btn--outline btn--sm" onclick="loadBookings()">Reintentar</button></div>`;
+  }
+}
+
+// ─── Render ───────────────────────────────────────────────
+function renderBookings() {
+  const list     = document.getElementById('bookings-list');
+  const countEl  = document.getElementById('filter-count');
+  let filtered   = currentFilter === 'all' ? allBookings : allBookings.filter(b => b.estado === currentFilter);
+
+  countEl.textContent = `${filtered.length} resultado${filtered.length !== 1 ? 's' : ''}`;
+
+  if (!filtered.length) {
+    const msgs = { pendiente: 'No hay solicitudes pendientes.', confirmado: 'No hay turnos confirmados.', rechazado: 'No hay turnos rechazados.', cancelado: 'No hay turnos cancelados.', all: 'No hay turnos registrados.' };
+    list.innerHTML = `<div class="admin-empty"><div class="admin-empty__icon">✓</div>${msgs[currentFilter] || 'Sin resultados.'}</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(b => {
+    const d       = formatDateShort(b.fecha);
+    const service = SERVICIOS[b.servicio] || b.servicio;
+    const nombre  = b.usuario ? `${b.usuario.nombre} ${b.usuario.apellido}` : 'Usuario eliminado';
+    const email   = b.usuario?.email || '–';
+    const tel     = b.usuario?.telefono || '';
+
+    const statusBadge = {
+      pendiente:  `<span class="badge" style="background:#FEF3E2;color:#A0660A">Pendiente</span>`,
+      confirmado: `<span class="badge badge--success">Confirmado</span>`,
+      rechazado:  `<span class="badge badge--cancelled">Rechazado</span>`,
+      cancelado:  `<span class="badge" style="background:var(--bg);color:var(--text-light)">Cancelado</span>`
+    }[b.estado] || `<span class="badge">${b.estado}</span>`;
+
+    const actions = b.estado === 'pendiente' ? `
+      <button class="btn-confirm" onclick="confirmBooking('${b.id}')">Confirmar</button>
+      <button class="btn-reject"  onclick="openRejectModal('${b.id}')">Rechazar</button>` :
+      `<span style="font-size:.75rem;color:var(--text-light)">${b.gestionadoAt ? 'Gestionado' : '–'}</span>`;
+
+    return `
+      <div class="booking-row" id="row-${b.id}">
+        <div>
+          <div class="booking-row__date">${d.day} ${d.month}</div>
+          <div class="booking-row__time">${b.hora} hs · ${b.fecha.split('-')[0]}</div>
+        </div>
+        <div>
+          <div class="booking-row__patient">${nombre}</div>
+          <div class="booking-row__email">${email}${tel ? ' · ' + tel : ''}</div>
+        </div>
+        <div class="booking-row__service">${service}</div>
+        <div class="booking-row__notas" title="${b.notas || ''}">${b.notas || '–'}</div>
+        <div>${statusBadge}</div>
+        <div class="booking-row__actions">${actions}</div>
+      </div>`;
+  }).join('');
+}
+
+// ─── Filter ───────────────────────────────────────────────
+function filterBy(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+  renderBookings();
+}
+
+// ─── Confirm booking ──────────────────────────────────────
+async function confirmBooking(id) {
+  const row = document.getElementById(`row-${id}`);
+  if (row) row.style.opacity = '.5';
+  try {
+    const res = await fetch(`${ADMIN_API}/bookings/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
+      body: JSON.stringify({ estado: 'confirmado' })
+    });
+    if (!res.ok) { const d = await res.json(); showToast('Error', d.error, 'error'); if (row) row.style.opacity = '1'; return; }
+    showToast('Turno confirmado', 'El paciente recibirá un email de confirmación.', 'success');
+    await loadData();
+  } catch {
+    showToast('Error', 'No se pudo confirmar.', 'error');
+    if (row) row.style.opacity = '1';
+  }
+}
+
+// ─── Reject modal ─────────────────────────────────────────
+function openRejectModal(id) {
+  rejectBookingId = id;
+  document.getElementById('reject-reason').value = '';
+  document.getElementById('reject-modal').style.display = 'flex';
+}
+function closeRejectModal() {
+  document.getElementById('reject-modal').style.display = 'none';
+  rejectBookingId = null;
+}
+async function confirmReject() {
+  if (!rejectBookingId) return;
+  const btn    = document.getElementById('confirm-reject-btn');
+  const motivo = document.getElementById('reject-reason').value.trim();
+  setLoading(btn, true);
+  try {
+    const res = await fetch(`${ADMIN_API}/bookings/${rejectBookingId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
+      body: JSON.stringify({ estado: 'rechazado', motivoRechazo: motivo })
+    });
+    if (!res.ok) { const d = await res.json(); showToast('Error', d.error, 'error'); setLoading(btn, false); return; }
+    closeRejectModal();
+    showToast('Solicitud rechazada', 'El paciente fue notificado por email.', 'default');
+    await loadData();
+  } catch {
+    showToast('Error', 'No se pudo rechazar.', 'error');
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+// Close modal on overlay click
+document.getElementById('reject-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeRejectModal();
+});
+</script>
+</body>
+</html>
